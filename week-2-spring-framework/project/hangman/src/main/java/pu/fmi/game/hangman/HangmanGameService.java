@@ -98,21 +98,25 @@ public class HangmanGameService {
       char actualLetter = wordToGuess.charAt(index);
       char currentLetter = currentWord.charAt(index);
 
-      // TODO: Добави логика да прави проверка дали
-      //  буквата съвпада с думата на тази позиция
-      //  и ако ДА - да я добавя към новата изградена дума
-
-      newCurrentWord.append(currentLetter);
+      if (actualLetter == letter) {
+        newCurrentWord.append(letter);
+      } else {
+        newCurrentWord.append(currentLetter); // Ако не, поставяме текущата буква (или "_")
+      }
     }
 
     return newCurrentWord.toString();
   }
-
   private void updateGameStatusIfFinished(HangmanGame hangmanGame){
 
-    // TODO: Проверете дали играта трябва да приключи
-    //  1. Ако текущият брой грешки е равен или по-голям от максималния – играта е загубена
-    //  2. Ако думата е напълно отгатната, играта е спечелена
+    if (hangmanGame.getCurrentWrongGuess() >= gameProperties.getMaxNumberOfGuesses()) {
+      hangmanGame.setStatus(Status.LOST);
+      return;
+    }
+
+    if (!hangmanGame.getCurrentWord().contains("_")) {
+      hangmanGame.setStatus(Status.WON);
+    }
 
   }
 
